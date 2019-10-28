@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transfer learning image classifier</title>
+
+    <!-- Import TensorFlow.js -->
+    <script src="/tf.min_formobilenet.js"></script>
+    <script src="/mobilenet.min.js"></script>
+</head>
+
+<body>
+    Transfer learning image classifier <br>
+
+    <!-- part 1 -->
+    <div id="console"></div>
+    <!-- Add an image that we will use to test -->
+    <img id="img" crossorigin src="/JlUvsxa.jpg" width="227" height="227" />
+    
+    <script>
+        // [part 1]
+        let net;
+        async function app() {
+            console.log('Loading mobilenet..');
+
+            // Load the model.
+            net = await mobilenet.load();
+            console.log('Successfully loaded model');
+
+            // Make a prediction through the model on our image.
+            const imgEl = document.getElementById('img');
+            const result = await net.classify(imgEl);
+            console.log(result);
+        }
+        app()
+    </script>
+</body>
+
+</html>
