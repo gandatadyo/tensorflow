@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TensorFlow in NodeJS</title>
+</head>
+
+<body>
+    Training and Prediction in Node.js <br>
+    <button onclick="SendData();">Test</button> <br>
+    <div id="console"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        function SendData() {
+            let msg = 'data'
+            socket.emit('datatensor', msg);
+        }
+        socket.on('datatensor', function (msg) {
+            let console = document.getElementById('console');
+            console.innerHTML = msg;
+        });
+    </script>
+
+</body>
+
+</html>
