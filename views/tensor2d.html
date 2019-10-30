@@ -16,9 +16,20 @@
 
 <body>
     Making predictions from 2d data <br>
+    <button onclick="StartTensor();">Start</button> <br>
+    <div id="console"></div>
 
     <script>
         console.log('Hello TensorFlow');
+        function StartTensor() {
+            run();
+        }
+        function ConsoleAdd(msg) {
+            let divconsole = document.getElementById('console');
+            let stext = document.createElement('div');
+            stext.innerHTML = msg;
+            divconsole.appendChild(stext);
+        }
 
         // [part 1]
         /**
@@ -38,6 +49,7 @@
         }
 
         async function run() {
+            ConsoleAdd('Process --> Start');
             // Load and plot the original input data that we are going to train on.
             const data = await getData();
             const values = data.map(d => ({
@@ -70,6 +82,7 @@
             // Make some predictions using the model and compare them to the
             // original data
             testModel(model, data, tensorData);
+            ConsoleAdd('Process --> Finish');
         }
 
         document.addEventListener('DOMContentLoaded', run);

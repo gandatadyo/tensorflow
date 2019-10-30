@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TensorFlow 2D</title>
+
+    <!-- Import TensorFlow.js -->
+    <script src="/tf.min.js"></script>
+    <!-- Import tfjs-vis -->
+    <script src="/tfjs-vis.umd.min.js"></script>
+
+</head>
+
+<body>
+    Making predictions from 2d data base Server Side<br>
+    <button onclick="SendData();">Test</button> <button onclick="StartTensor();">Start</button> <br>
+    <div id="console"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        function SendData() {
+            let msg = 'test data'
+            socket.emit('datatensor_2dserverside', msg);
+        }
+        async function StartTensor() {
+            const response = await fetch('/tensor2dserverside_start');
+            const myResponse = await response.text();
+            console.log(myResponse);
+        }
+        socket.on('datatensor_2dserverside', function (msg) {
+            if (msg.type == 'vistensor1') {
+                let values = msg.data;
+                tfvis.render.scatterplot(
+                    { name: 'Horsepower v MPG' },
+                    { values },
+                    {
+                        xLabel: 'Horsepower',
+                        yLabel: 'MPG',
+                        height: 300
+                    }
+                );
+            } else if (msg.type == 'vistensor3') {
+                let values = msg.data.values;
+                let originalPoints = msg.data.originalPoints;
+                let predictedPoints = msg.data.predictedPoints;
+                tfvis.render.scatterplot(
+                    { name: 'Model Predictions vs Original Data' },
+                    { values: [originalPoints, predictedPoints], series: ['original', 'predicted'] },
+                    {
+                        xLabel: 'Horsepower',
+                        yLabel: 'MPG',
+                        height: 300
+                    }
+                );
+            } else {
+                ConsoleAdd(msg);
+            }
+        });
+        function ConsoleAdd(msg) {
+            let divconsole = document.getElementById('console');
+            let stext = document.createElement('div');
+            stext.innerHTML = msg;
+            divconsole.appendChild(stext);
+        }
+    </script>
+</body>
+
+</html>

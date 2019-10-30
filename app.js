@@ -20,11 +20,14 @@ const io = require('socket.io')(server);
 io.on('connection', function (socket) {
   // console.log('a user connected');
   socket.on('disconnect', function () {
-      console.log('disconnected');
+    console.log('disconnected');
   });
 
   socket.on('datatensor', function (msg) {
-      io.emit('datatensor', msg);
+    io.emit('datatensor', msg);
+  });
+  socket.on('datatensor_2dserverside', function (msg) {
+    io.emit('datatensor_2dserverside', msg);
   });
 });
 
@@ -61,6 +64,23 @@ app.get('/tensorimageclassifier_webcam', (req, res) => {
   res.render('tensorimageclassifier_webcam.html', {})
 })
 
+app.get('/tensor2dserverside', (req, res) => {
+  //Making predictions from 2d data
+  res.render('tensor2d_serverside.html', {})
+})
+
+// Rest API
+app.get('/tensor2dserverside_start', (req, res) => {
+  res.send('start tensor')
+  router_module.Tensor_MakingPredictionData2D()
+})
+
+
+
 
 // app.listen(port, () => console.log(`Example app listening on port ${port}!`)) // listen by express
 server.listen(3000); // listen by socket io
+
+exports.data = {
+  io: io
+}

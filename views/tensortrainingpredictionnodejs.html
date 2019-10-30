@@ -17,7 +17,7 @@
     <script>
         var socket = io();
         function SendData() {
-            let msg = 'data'
+            let msg = 'test data'
             socket.emit('datatensor', msg);
         }
         socket.on('datatensor', function (msg) {
