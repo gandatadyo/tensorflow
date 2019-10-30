@@ -13,11 +13,13 @@
 </head>
 
 <body>
-    <div id="console"></div>
+    <div id="consolewebcam"></div>
     <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
     <button id="class-a">Add A</button>
     <button id="class-b">Add B</button>
     <button id="class-c">Add C</button>
+
+    <div id="console"></div>
 
 
     <script src="/knn-classifier.min.js"></script>
@@ -40,6 +42,7 @@
             const addExample = async classId => {
                 // Capture an image from the web camera.
                 const img = await webcam.capture();
+                ConsoleAdd(img);
 
                 // Get the intermediate activation of MobileNet 'conv_preds' and pass that
                 // to the KNN classifier.
@@ -67,10 +70,7 @@
                     const result = await classifier.predictClass(activation);
 
                     const classes = ['A', 'B', 'C'];
-                    document.getElementById('console').innerText = `
-        prediction: ${classes[result.label]}\n
-        probability: ${result.confidences[result.label]}
-      `;
+                    document.getElementById('consolewebcam').innerText = `prediction: ${classes[result.label]}\n probability: ${result.confidences[result.label]} `;
 
                     // Dispose the tensor to release the memory.
                     img.dispose();
@@ -80,6 +80,14 @@
             }
         }
         app();
+        function ConsoleAdd(msg) {
+            let divconsole = document.getElementById('console');
+            let stext = document.createElement('div');
+            stext.innerHTML = msg;
+            divconsole.appendChild(stext);
+            let shr = document.createElement('hr');
+            divconsole.appendChild(shr);
+        }
     </script>
 </body>
 
